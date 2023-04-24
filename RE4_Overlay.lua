@@ -1568,13 +1568,13 @@ end,
                             StatsUI:NewRow(string.format("Pos X:%f,Y:%f,Z:%f",transforms.pos.x,transforms.pos.y,transforms.pos.z))
                             StatsUI:NewRow(string.format("Rot X:%f,Y:%f,Z:%f,W:%f",transforms.rot.x,transforms.rot.y,transforms.rot.z,transforms.rot.w))
                             StatsUI:NewRow("")
-                            local duffel = tonumber(transforms.pos.y)
-                            if duffel <= -0.5 and duffel >= -1 then duffelNumber = duffel end
+                            local duffel = FloatColumn(transforms.pos.y)
+                            if duffel <= -0.5f and duffel >= -1 then duffelNumber = duffel end
                             --if duffel == nil then duffelNumber = nil end
                             if duffelNumber ~= nil then
-                                StatsUI:NewRow(string.format("Duffel Bag: ON (".. duffelNumber.. ")"))
+                                StatsUI:NewRow("Duffel Bag:" .. FloatColumn(duffelNumber)
                             else
-                                StatsUI:NewRow(string.format("Duffel Bag: OFF"))
+                                StatsUI:NewRow("Duffel Bag: OFF")
                             end
 
                             

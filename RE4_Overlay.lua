@@ -1572,7 +1572,7 @@ end,
                             if duffel <= -0.5 and duffel >= -1 then duffelNumber = duffel end
                             --if duffel == nil then duffelNumber = nil end
                             if duffelNumber ~= nil then
-                                StatsUI:NewRow(string.format("Duffel Bag: ON (".. duffelNumber.. ")"))
+                                StatsUI:NewRow("Duffel Bag: ON " .. tostring(duffelNumber))
                             else
                                 StatsUI:NewRow(string.format("Duffel Bag: OFF"))
                             end

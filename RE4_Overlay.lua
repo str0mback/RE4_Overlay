@@ -264,17 +264,17 @@ local DisplayConfigOrder = {
     "Player HP Value",
     "Player Hate Rate",
     "Player Distance",
-    ----
-    "Armory Info",
-    ----
-    ----
+
+    "Duffel Check",
+    "Display Position",
+    "Display Rotation",
+
     "Enemy UI Title",
     "Enemy Name",
     "Enemy HP Value",
     "Enemy Game Rank Add",
     "Enemy Part HP Value",
 
-    ----
     "Charm Manager Title",
     "Charm Manager Random Table Seed",
     "Charm Manager Random Table Counter"
@@ -1536,56 +1536,49 @@ end,
             -- StatsUI:NewRow("1P HP: " .. FloatColumn(player:call("get_WwisePlayerHPRatio_1P")))
             -- StatsUI:NewRow("2P HP: " .. FloatColumn(player:call("get_WwisePlayerHPRatio_2P")))
             StatsUI:NewRow("Player Distance: " .. FloatColumn(player:call("get_WwisePlayerDistance")), "Player Distance")
-            StatsUI:NewRow("")
         end
         
         local sceneMgr = GetSceneManager()
         if sceneMgr and Config.StatsUI.Enabled then
             local scene = sdk.call_native_func(sceneMgr, TypeDefSceneManager, "get_CurrentScene")
-            if scene and Config.DisplayConfig["Armory Info"] then
-                -- TODO: Current Weapon
-                StatsUI:NewRow("-- Position --")
-                local lastWeaponID = ""
-                local lastWeaponItemID = ""
-                local harpoonChargePower
+            if scene and Config.DisplayConfig["Duffel Check"] then
                 local playerBody = scene:call("findGameObject(System.String)", "ch0a0z0_body")
                 if playerBody == nil then playerBody = scene:call("findGameObject(System.String)", "ch6i0z0_body") end
                 if playerBody == nil then playerBody = scene:call("findGameObject(System.String)", "ch6i1z0_body") end
                 if playerBody == nil then playerBody = scene:call("findGameObject(System.String)", "ch6i2z0_body") end
                 if playerBody == nil then playerBody = scene:call("findGameObject(System.String)", "ch6i3z0_body") end
-                
-                StatsUI:NewRow("PlayerBody:" .. tostring (playerBody))
+
                 if playerBody then
                     local playerBody_Transform = playerBody:call("getComponent(System.Type)", sdk.typeof("via.Transform"))
-                    if playerBody_Transform then
-                        --log.info("Found player transform")
-                            
+                    if playerBody_Transform then    
                         transforms = {
                          pos = playerBody_Transform:call("get_Position"),
                          rot = playerBody_Transform:call("get_Rotation"),
                          }
 
-                            StatsUI:NewRow(string.format("Pos X:%f,Y:%f,Z:%f",transforms.pos.x,transforms.pos.y,transforms.pos.z))
-                            StatsUI:NewRow(string.format("Rot X:%f,Y:%f,Z:%f,W:%f",transforms.rot.x,transforms.rot.y,transforms.rot.z,transforms.rot.w))
-                            StatsUI:NewRow("")
-                            local duffel = tonumber(transforms.pos.y)
-                            if duffel <= -0.5 and duffel >= -1 then duffelNumber = duffel end
-                            --if duffel == nil then duffelNumber = nil end
-                            if duffelNumber ~= nil then
-                                StatsUI:NewRow("Duffel Bag: ON " .. tostring(duffelNumber))
-                            else
-                                StatsUI:NewRow(string.format("Duffel Bag: OFF"))
-                            end
-
-                            
-
+                        local duffelYPos = tonumber(transforms.pos.y)
+                        if duffelYPos < 0 and duffelYPos > -0.5 then
+                            duffelNumber = nil
+                        elseif duffelYPos <= -0.5 and duffelYPos >= -1 then
+                            duffelNumber = duffelYPos
+                        end
+                        if duffelNumber ~= nil then
+                            StatsUI:NewRow("Duffel Bag: ON (" .. tostring(duffelNumber) .. ")")
+                        else
+                            StatsUI:NewRow("Duffel Bag: OFF")
+                        end
+                        if scene and Config.DisplayConfig["Display Position"] then
+                            StatsUI:NewRow(string.format("POS: X: %f|Y: %f|Z: %f",transforms.pos.x,transforms.pos.y,transforms.pos.z))
+                        end
+                        if scene and Config.DisplayConfig["Display Rotation"] then
+                            StatsUI:NewRow(string.format("ROT: X: %f|Y: %f|Z: %f|W: %f",transforms.rot.x,transforms.rot.y,transforms.rot.z,transforms.rot.w))
+                        end
                     end
-                else
-                duffelNumber = nil
-                end
-                StatsUI:NewRow("")
+                else duffelNumber = nil
             end
+            StatsUI:NewRow("")
         end
+    end
 
         if Config.TesterMode then
             -- if lastHoverKeyItemID ~= nil then

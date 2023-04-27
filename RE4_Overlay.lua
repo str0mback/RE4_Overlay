@@ -1568,10 +1568,10 @@ end,
                             StatsUI:NewRow("Duffel Bag: OFF")
                         end
                         if scene and Config.DisplayConfig["Display Position"] then
-                            StatsUI:NewRow(string.format("POS: X: %f|Y: %f|Z: %f",transforms.pos.x,transforms.pos.y,transforms.pos.z))
+                            StatsUI:NewRow(string.format("POS: X: %f | Y: %f | Z: %f",transforms.pos.x,transforms.pos.y,transforms.pos.z))
                         end
                         if scene and Config.DisplayConfig["Display Rotation"] then
-                            StatsUI:NewRow(string.format("ROT: X: %f|Y: %f|Z: %f|W: %f",transforms.rot.x,transforms.rot.y,transforms.rot.z,transforms.rot.w))
+                            StatsUI:NewRow(string.format("ROT: X: %f | Y: %f | Z: %f | W: %f",transforms.rot.x,transforms.rot.y,transforms.rot.z,transforms.rot.w))
                         end
                     end
                 else duffelNumber = nil
